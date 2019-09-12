@@ -7,7 +7,7 @@
       </div> -->
 
       <!-- 全图例加载go -->
-      <div class="legend-tree" style="overflow:scroll;max-height:500px; ">
+      <!-- <div class="legend-tree" style="overflow:scroll;max-height:500px; ">
         <el-tree
           :data="legendArray"
           show-checkbox
@@ -26,7 +26,7 @@
             <span style="padding-left: 4px;">{{ node.label }}</span>
           </span>
         </el-tree>
-      </div>
+      </div> -->
       <!-- 全图例加载 end -->
 
       <div class="zzy-legenditem" @click="upItem('grape')">
@@ -36,13 +36,15 @@
         <span>葡萄种植大棚</span>
         &nbsp;&nbsp;&nbsp;&nbsp;
       </div>
-
       <br />
       <div class="zzy-legenditem" @click="upItem('strawberry')">
         &nbsp; &nbsp;
         <span style="background-color:red;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
         &nbsp;
         <span>草莓种植大棚</span>
+      </div>
+      <div>
+        <button @click="ChangeBaseMap">地图切换</button>
       </div>
     </div>
     <!-- 地图div -->
@@ -163,7 +165,8 @@ export default {
       viewerflyToLonLat(117.356, 35.9, 500);
     }, 1500);
 
-    layers.addImageryProvider(this.AddChineseTDT()); //加载全国天地图
+    layers.addImageryProvider(this.AddChineseTDT()); //加载全国天地图影像地图
+    layers.addImageryProvider(this.AddChineseTDTSL()); //加载全国天地图中文注记图层
     // layers.addImageryProvider(this.AddCX()); //加载长兴正射影像图
 
     this.ajaxInit(
@@ -319,13 +322,15 @@ export default {
             }, 80);
           });
         }
-      } 
+      }
       // 草莓大棚
       else if (id === "strawberry") {
-        strawberry_data.entities.values.push(strawberry_data.entities.values[0]);
+        strawberry_data.entities.values.push(
+          strawberry_data.entities.values[0]
+        );
         console.log(strawberry_data);
         console.log(grape_data.entities.values);
-        
+
         // if (!upItemOBJ[id]) {
         //   upItemOBJ[id] = true;
         //   if (strawberry_data.entities.values.length === 1) {
@@ -350,7 +355,6 @@ export default {
         //     }
         //   }, 80);
         // }
-
       }
 
       // eval(go);
@@ -369,8 +373,23 @@ export default {
       });
       return tdtImageryProvider;
     },
+    AddChineseTDTSL() {
+      //加载全国天地图 中文注记
+      var tdtImageryProvider = new Cesium.WebMapTileServiceImageryProvider({
+        url:
+          "http://{s}.tianditu.gov.cn/cia_w/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=cia&tileMatrixSet=w&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}&style=default&tk=ebf64362215c081f8317203220f133eb",
+        layer: "tiandituImgMarker",
+        style: "default",
+        format: "image/jpeg",
+        tileMatrixSetID: "tiandituImgMarker",
+        subdomains: ["t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7"],
+        show: true,
+        maximumLevel: 16
+      });
+      return tdtImageryProvider;
+    },
     AddCX() {
-      //加载全国天地图
+      //加载正射影像
       let cxImageryProvider = new Cesium.WebMapTileServiceImageryProvider({
         url:
           "http://192.168.1.165:8080/geoserver/gwc/service/wmts/rest/test:zhengshe/EPSG:900913/EPSG:900913:{TileMatrix}/{TileRow}/{TileCol}?format=image/png",
@@ -480,7 +499,9 @@ export default {
         ("0" + g.toString(16)).slice(-2) +
         ("0" + b.toString(16)).slice(-2)
       );
-    }
+    },
+    // 地图切换功能
+    ChangeBaseMap() {}
   },
   data() {
     return {
