@@ -165,8 +165,9 @@ export default {
       viewerflyToLonLat(117.356, 35.9, 500);
     }, 1500);
 
-    layers.addImageryProvider(this.AddChineseTDT()); //加载全国天地图影像地图
-    layers.addImageryProvider(this.AddChineseTDTSL()); //加载全国天地图中文注记图层
+    // layers.addImageryProvider(this.AddChineseTDT()); //加载全国天地图影像地图
+    // layers.addImageryProvider(this.AddTDTSL()); //加载全国天地图 矢量地图
+    // layers.addImageryProvider(this.AddChineseTDTSL()); //加载全国天地图中文注记图层
     // layers.addImageryProvider(this.AddCX()); //加载长兴正射影像图
 
     this.ajaxInit(
@@ -384,7 +385,19 @@ export default {
         tileMatrixSetID: "tiandituImgMarker",
         subdomains: ["t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7"],
         show: true,
-        maximumLevel: 16
+        maximumLevel: 18
+      });
+      return tdtImageryProvider;
+    },
+    AddTDTSL() {
+      //加载全国天地图 矢量地图
+      var tdtImageryProvider = new Cesium.WebMapTileServiceImageryProvider({
+        url: "http://{s}.tianditu.gov.cn/vec_w/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=vec&tileMatrixSet=w&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}&style=default&format=tiles&tk=ebf64362215c081f8317203220f133eb",
+        layer: "tdtVecBasicLayer",
+        style: "default",
+        format: "image/jpeg",
+        tileMatrixSetID: "GoogleMapsCompatible",
+        subdomains: ["t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7"],
       });
       return tdtImageryProvider;
     },
