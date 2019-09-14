@@ -111,6 +111,10 @@ let viewer,
   intelligentGreenhouse_data;
 let legendArray = [];
 let upItemOBJ = {};
+let layers;
+// let TDT_yingxiang;
+// let TDT_shiliang;
+// let TDT_zhuji;
 
 export default {
   name: "CesiumViewer",
@@ -132,7 +136,7 @@ export default {
 
     viewer._cesiumWidget._creditContainer.style.display = "none"; //去除版权信息
 
-    var layers = viewer.imageryLayers;
+    layers = viewer.imageryLayers;
     var entity;
 
     function viewerflyToLonLat(lon, lat, alt) {
@@ -165,10 +169,15 @@ export default {
       viewerflyToLonLat(117.356, 35.9, 500);
     }, 1500);
 
-    // layers.addImageryProvider(this.AddChineseTDT()); //加载全国天地图影像地图
-    // layers.addImageryProvider(this.AddTDTSL()); //加载全国天地图 矢量地图
-    // layers.addImageryProvider(this.AddChineseTDTSL()); //加载全国天地图中文注记图层
+    // TDT_yingxiang = this.AddChineseTDT();
+    // TDT_shiliang = this.AddTDTSL();
+    // TDT_zhuji = this.AddChineseTDTSL();
+
+    layers.addImageryProvider(this.AddChineseTDT(), 1); //加载全国天地图影像地图
+    layers.addImageryProvider(this.AddTDTSL(), 2); //加载全国天地图 矢量地图
+    layers.addImageryProvider(this.AddChineseTDTSL(), 3); //加载全国天地图中文注记图层
     // layers.addImageryProvider(this.AddCX()); //加载长兴正射影像图
+    layers._layers[2].show = false; //将矢量影像设置为不可见
 
     this.ajaxInit(
       {
@@ -392,12 +401,13 @@ export default {
     AddTDTSL() {
       //加载全国天地图 矢量地图
       var tdtImageryProvider = new Cesium.WebMapTileServiceImageryProvider({
-        url: "http://{s}.tianditu.gov.cn/vec_w/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=vec&tileMatrixSet=w&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}&style=default&format=tiles&tk=ebf64362215c081f8317203220f133eb",
+        url:
+          "http://{s}.tianditu.gov.cn/vec_w/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=vec&tileMatrixSet=w&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}&style=default&format=tiles&tk=ebf64362215c081f8317203220f133eb",
         layer: "tdtVecBasicLayer",
         style: "default",
         format: "image/jpeg",
         tileMatrixSetID: "GoogleMapsCompatible",
-        subdomains: ["t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7"],
+        subdomains: ["t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7"]
       });
       return tdtImageryProvider;
     },
@@ -514,7 +524,17 @@ export default {
       );
     },
     // 地图切换功能
-    ChangeBaseMap() {}
+    ChangeBaseMap() {
+      console.log("地图切换");
+      // 使用这个变量进行底图的切换 和控制
+      if (layers._layers[1].show) {
+        layers._layers[1].show = false;
+        layers._layers[2].show = true;
+      } else {
+        layers._layers[1].show = true;
+        layers._layers[2].show = false;
+      }
+    }
   },
   data() {
     return {
