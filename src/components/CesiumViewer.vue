@@ -7,7 +7,7 @@
       </div> -->
 
       <!-- 全图例加载go -->
-      <!-- <div class="legend-tree" style="overflow:scroll;max-height:500px; ">
+      <div class="legend-tree" style="overflow:scroll;max-height:500px; ">
         <el-tree
           :data="legendArray"
           show-checkbox
@@ -26,7 +26,7 @@
             <span style="padding-left: 4px;">{{ node.label }}</span>
           </span>
         </el-tree>
-      </div> -->
+      </div>
       <!-- 全图例加载 end -->
 
       <div class="zzy-legenditem" @click="upItem('grape')">
@@ -525,7 +525,6 @@ export default {
     },
     // 地图切换功能
     ChangeBaseMap() {
-      console.log("地图切换");
       // 使用这个变量进行底图的切换 和控制
       if (layers._layers[1].show) {
         layers._layers[1].show = false;
