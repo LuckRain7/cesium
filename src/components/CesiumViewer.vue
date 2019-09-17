@@ -366,7 +366,18 @@ export default {
         //   }, 80);
         // }
       }
-
+      const handler = new Cesium.ScreenSpaceEventHandler(viewer.canvas);
+      handler.setInputAction(function(evt) {
+        var cartesian = viewer.camera.pickEllipsoid(
+          evt.position,
+          viewer.scene.globe.ellipsoid
+        );
+        var cartographic = Cesium.Cartographic.fromCartesian(cartesian);
+        var lng = Cesium.Math.toDegrees(cartographic.longitude); //经度值
+        var lat = Cesium.Math.toDegrees(cartographic.latitude); //纬度值
+        var mapPosition = { x: lng, y: lat, z: cartographic.height }; //cartographic.height的值始终为零。
+        console.log(mapPosition);
+      }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
       // eval(go);
     },
     AddChineseTDT() {
