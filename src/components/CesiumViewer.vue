@@ -392,7 +392,7 @@ export default {
         var mapPosition = { x: lng, y: lat, z: cartographic.height }; //cartographic.height的值始终为零。
         console.log(mapPosition);
       }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
-      // eval(go);
+      
     },
     AddChineseTDT() {
       //加载全国天地图
