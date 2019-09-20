@@ -368,17 +368,7 @@ export default {
         //       }
         //     }, 80);
         //   }
-        // } else {
-        //   upItemOBJ[id] = false;
-        //   let item = strawberry_data.entities.values[0];
-        //   // item.polygon.extrudedHeight = 1;
-        //   let intercal = setInterval(() => {
-        //     item.polygon.extrudedHeight -= 10;
-        //     if (item.polygon.extrudedHeight == 1) {
-        //       clearInterval(intercal);
-        //     }
-        //   }, 80);
-        // }
+
       }
       const handler = new Cesium.ScreenSpaceEventHandler(viewer.canvas);
       handler.setInputAction(function(evt) {
