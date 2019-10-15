@@ -480,7 +480,6 @@ export default {
     },
     // 初始化模块化
     ajaxInit(options, callback) {
-      // 定义图例
       let l = {
         id: "",
         label: "",
@@ -492,11 +491,9 @@ export default {
         `rgba(${options.color[0]},${options.color[1]},${options.color[2]},1)`
       );
       l.label = options.legend;
-      // 进行图层初始化
       Cesium.GeoJsonDataSource.load(options.url).then(dataSource => {
         viewer.dataSources.add(dataSource);
         dataSource.entities.values.forEach((item, index) => {
-          // 判断空值
           if (item.name) {
             l.children.push({
               label: item.name,
